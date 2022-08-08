@@ -7,29 +7,34 @@ import org.springframework.stereotype.Service;
 
 import com.demorest.entity.Cliente;
 import com.demorest.repository.ClienteRepository;
+import com.demorest.utils.ClienteNotFoundException;
 
 @Service
 public class ClienteService {
 
-	@Autowired
-	ClienteRepository clienteRepository;
-	
-	
-	public int insert(Cliente c) {
-		return clienteRepository.insert(c);
-	}
-	
-	public Cliente findById(int l) {
-		 return clienteRepository.findById(l);
-		
-		 
-	}
-	
-	public List<Cliente> getAll(){
-		return clienteRepository.findAll();
-	}
-	
-	public int update(Cliente c) {
-		return clienteRepository.update(c);
-	}
+    @Autowired
+    ClienteRepository clienteRepository;
+
+
+    public int insert(final Cliente c) {
+        if (c.getCodigo() == 0) {
+            throw new ClienteNotFoundException("Mala request intenta de nuevo.");
+        }
+        return this.clienteRepository.insert(c);
+    }
+
+    public Cliente findById(final int l) {
+        return this.clienteRepository.findById(l);
+
+
+    }
+
+    public List<Cliente> getAll() {
+        return this.clienteRepository.findAll();
+    }
+
+    public int update(final Cliente c) {
+        return this.clienteRepository.update(c);
+    }
+
 }
